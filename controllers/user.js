@@ -46,18 +46,17 @@ export const getMyDetail = (req, res) => {
 
 export const logout = async (req, res, next) => {
   try {
-    res
-      .status(200)
-      .cookie("token", "", { expires: new Date(Date.now()),
-        samSite: process.env.NODE_ENV==="Development" ? "lax" : "none",
-        secure:process.env.NODE_ENV==="Development" ? false : true
-       })
-
-      .json({
-        success: true,
-        user: req.user,
-        message: "Logout successfully",
-      });
+    res.status(200)
+  .cookie("token", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "Development" ? false : true,
+    sameSite: process.env.NODE_ENV === "Development" ? "Lax" : "None",
+    expires: new Date(0) // Yeh sahi hai cookie expire karne ke liye
+  })
+  .json({
+    success: true,
+    message: "Logout successfully"
+  });
   } catch (error) {
     next(error);
   }
